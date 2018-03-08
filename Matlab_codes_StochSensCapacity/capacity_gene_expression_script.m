@@ -55,6 +55,7 @@ Tp=zeros((K),1);
 %% CALCULATION OF FISHER INFORMATION MATRIX
 par(1)=stim_min;
 for i=1:K
+    disp(i)
     par(1)=stim_span(i);
     [Tptemp]=Fisher_Jf(name,1,0.2,init_T,y0,obsv,0.1,'TP','FALSE',par,stim_ind,0);
     Tp(i)=abs(det(Tptemp));

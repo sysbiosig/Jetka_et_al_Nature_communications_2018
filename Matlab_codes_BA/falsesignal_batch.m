@@ -18,7 +18,7 @@ addpath('aux_functions/');
 startTime=datestr(now,'yymmdd_HHMMSS');
 name='falsesignal';
 
-dist='gamma';
+dist='lnorm2';
 sdtypes=[0.01,0.1,0.5,1,5,10,25,50];
 output_ns=[10,50,100,500];
 ilambdas=[1,0.5,0.1];
