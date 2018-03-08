@@ -35,7 +35,7 @@ M=importdata(['models_parameters/',name,'/',name,'_par.csv'],'\t',1);
 par=zeros(16,1);
 CapacityApp=zeros(par_nrow,1);
 JPmatrix=cell(par_nrow,1);
-init_T=0.05; % initial time
+init_T=0.5; % initial time
 obsv=[21,22]; % indices of observed variables
 t_discont=5;
 freq=5/3; % time distance between observations    
@@ -117,4 +117,4 @@ toc;
 delete(gcp)
     
 % Summarising results
-capacity_multi_summary(output_folder_p,output_folder1,obsv,stim1_span,stim2_span,KMesh,nvar_ext,N,stim_ind)
+capacity_multi_summary(output_folder_p,output_folder1,obsv,stim1_span,stim2_span,KMesh,nvar_ext,N,stim_ind);

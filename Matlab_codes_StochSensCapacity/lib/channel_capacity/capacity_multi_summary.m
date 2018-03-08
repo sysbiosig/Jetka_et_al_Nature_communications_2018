@@ -17,7 +17,7 @@ function [returnx] = capacity_multi_summary(output_folder_p,output_folder1,obsv,
  	
  	% Loading in results
     for i=1:KMesh
-              disp(num2str(i));
+              %disp(num2str(i));
               output_folder_parallel=[output_folder_p,'/Run_',num2str(i)];
               load([output_folder_parallel,'/output.mat'])
               
@@ -29,7 +29,7 @@ function [returnx] = capacity_multi_summary(output_folder_p,output_folder1,obsv,
     end
 
     pca_tresh=[0.0001];
-	ipca=1
+	ipca=1;
     par_nrow=1;
     npar=2;
     lobs=2;
@@ -125,13 +125,16 @@ function [returnx] = capacity_multi_summary(output_folder_p,output_folder1,obsv,
           
  	jeff_singOutN=reshape(sqrt(Tp_singOutN),length(stim1_span),length(stim2_span));
  	jeffZ_singOutN=trapz(stim2_span,trapz(stim1_span,jeff_singOutN));
- 	JPmatrixNout{k}(:,ipca)=reshape(jeff_singOutN/jeffZ_singOutN,KMesh,1);
-	CapacityApp_singOutN(k,ipca) = log( ( (1/(2*pi*exp(1)))^(0.5*length(stim_ind) ) ) * jeffZ_singOutN );
-
-    output_probsNout=[stim_spanMesh,JPmatrixNout{k}];
-    output_data4=CapacityApp_singOutN(k,:);
+ 	JPmatrixNout{1}(:,ipca)=reshape(jeff_singOutN/jeffZ_singOutN,KMesh,1);
+	CapacityApp_singOutN(1,ipca) = log( ( (1/(2*pi*exp(1)))^(0.5*length(stim_ind) ) ) * jeffZ_singOutN );
+    
+    [stim1Mesh stim2Mesh]=meshgrid(stim1_span,stim2_span);
+    stim_spanMesh=[stim1Mesh(:),stim2Mesh(:)];
+    
+    output_probsNout=[stim_spanMesh,JPmatrixNout{1}];
+    output_data4=CapacityApp_singOutN(1,:);
     dlmwrite([output_folder1,'/capacity_pcaSingOut.csv'],output_data4,',')
     dlmwrite([output_folder1,'/probsNout.csv'],output_probsNout,',')
 	dlmwrite([output_folder1,'/TimeCalc.csv'],time_calc,',')
-	returnx=1
+	returnx=1;
 end

@@ -84,7 +84,7 @@ For a single run:
 3. Matlab_codes_StocSensCapacity
 * binomial model - up to 1 minute
 * gene_expression model - up to 1 minute
-* STAT_IFN signaling model - several hours
+* STAT_IFN signaling model - 10 hours
 
 
 For a full analysis as in the Main Paper: 
