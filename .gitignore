@@ -3,4 +3,8 @@
 *.rds
 *.Rhistory
 *.RData
-*.csv
+*.mat
+
+R_codes/output/
+Matlab_codes_BA/output/
+Matlab_codes_StochSensCapacity/output/
