@@ -1,4 +1,4 @@
-function [FisherTP Mean_term Var_term FisherTPN Mean_termN Var_termN traj S]= FisherFunctionTP_Jf(name,N,freq, init_T,y0,obs,merr, par, stim_ind)
+function [FisherTP Mean_term Var_term FisherTPN Mean_termN Var_termN traj S conc_traj_deriv dSigma]= FisherFunctionTP_Jf(name,N,freq, init_T,y0,obs,merr, par, stim_ind)
 
     addpath([pwd, '/models','/',name,'/symbolic/' ]);
 

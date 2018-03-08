@@ -1,4 +1,4 @@
-function [FisherTS Mean_term Var_term FisherTSN Mean_termN Var_termN traj S]= FisherFunctionTS_JfDisCont(name,N,freq, init_T,y0,obs,merr, par, stim_ind,t_discont)
+function [FisherTS Mean_term Var_term FisherTSN Mean_termN Var_termN traj S conc_traj_deriv dSigma]= FisherFunctionTS_JfDisCont(name,N,freq, init_T,y0,obs,merr, par, stim_ind,t_discont)
 %function calculates FIM for TS data for standard parameters
 disp('Calculating FIM '); 
 %%path to a folder where model files are stored

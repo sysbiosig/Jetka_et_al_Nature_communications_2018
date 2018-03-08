@@ -3,6 +3,7 @@
 
 # Code I: Validation of capacity approximation by using Jeffrey's prior - R scripts
 # R-script for calculating small noise approximation and C_N and C_A from Main Paper Results section
+# for the model of ligand-receptor binding with false signal
 
 ## Set your workings directory ####
 #setwd("~/Documents/Science/Paper_codes/R_codes/")

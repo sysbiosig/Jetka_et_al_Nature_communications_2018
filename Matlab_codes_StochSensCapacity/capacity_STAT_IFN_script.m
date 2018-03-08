@@ -1,3 +1,15 @@
+% Custom code accompanying manuscript NCOMMS-18-04749:
+% "An information-theoretic framework for deciphering pleiotropic and noisy biochemical signaling"
+
+% Code III: Analysis of information flow in IFN signaling
+% Matlab script running calculations of channel capacity for the STAT_IFN
+% model.
+
+% See reference on StochSens for details regarding model's definition
+% Model's files: rates, stoichiometry matrix, parameters definitions and stimulus are in directory /models/STAT_IFN/
+% Basic model parameters are in directory /model_parameters/STAT_IFN/
+% Output (capacity estimate and optimal distribution) is saved to directory /output/STAT_IFN/
+
 % model name
 clear all;
 close all;
@@ -10,9 +22,12 @@ mkdir(path_output)
 addpath(genpath('lib'))
 addpath(genpath('input'))
 addpath(genpath('models'))
-% creating model equations based on model equations; should be uncommented after used once 
-create(name);
+% creating model equations based on model equations; should be uncommented
+% after first use
+% create(name);
 
+% Loading parameters
+parset_num=1;
 M=importdata(['models_parameters/',name,'/',name,'_par.csv'],'\t',1);
 [par_nrow par_ncol]=size(M.data);
 
@@ -30,8 +45,7 @@ path_output_parallel=[path_output,'/parallel/'];
 mkdir(path_output)
 mkdir(path_output_parallel)
 
-k=1
-
+k=1;
 % number of observations
 parM=M.data(k,:);    
 par(3:16)=parM(7:20);
@@ -39,7 +53,6 @@ par(3:16)=parM(7:20);
     
 output_folder_p=[path_output_parallel,'/ParSet_',num2str(k)];
 output_folder1=[path_output,'/capacity_A/ParSet_',num2str(k)];
-
 mkdir(output_folder_p);
 mkdir(output_folder1);
 
@@ -58,7 +71,7 @@ stim2_ind = [2];
 stim2_span=exp(linspace(log(stim2_min),log(stim2_max),stim2_n));
 K2=length(stim2_span);
     
-    %% initial conditions
+%% initial conditions
 nvar = 22; 
 nvar_ext = 2*nvar + (nvar-1)*nvar/2;
 y0       = zeros(1,nvar_ext);
@@ -67,9 +80,10 @@ y0(23)   = parM(43);
 y0(24)   = parM(44);
 y0(25)   = parM(45);
 y0(26)   = parM(46);
-
 N=parM(47);
-    
+
+
+% Allowing model to equilibrate
 par(1)=stim1_min;
 par(2)=stim2_min;
 timeWait=5;
@@ -81,7 +95,8 @@ for (iii=1:100)
     y0((nvar+1):(2*nvar))=diag(variance_sol);
     y0((2*nvar+1):nvar_ext) =triu2vec(variance_sol);
 end
-         
+
+% Setting up input mesh
 [stim1Mesh stim2Mesh]=meshgrid(stim1_span,stim2_span);
 stim_spanMesh=[stim1Mesh(:),stim2Mesh(:)];
 stim_ind=[stim1_ind,stim2_ind];
@@ -101,3 +116,5 @@ end
 toc;
 delete(gcp)
     
+% Summarising results
+capacity_multi_summary(output_folder_p,output_folder1,obsv,stim1_span,stim2_span,KMesh,nvar_ext,N,stim_ind)

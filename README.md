@@ -95,6 +95,8 @@ For a full analysis as in the Main Paper:
 
 ## Instruction for use
 
+See instruction in specific scripts for more assistance
+
 ### How to run the software on your data
 
 1. R_codes - to simulate a model of receptor-ligand binding model with false signal and estimate its capacity for different false signal distribution, you need only to change initial paramteres given at the beginning of the script.

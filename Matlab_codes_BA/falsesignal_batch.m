@@ -3,7 +3,8 @@
 
 % Code II: Validation of capacity approximation by using Jeffrey's prior -
 % Matlab scripts
-% Matlab script for (batch) calculating Blahut-Arimoto from Main Paper Results section
+% Matlab script for (batch) calculating Blahut-Arimoto from Main Paper
+% Results section # for the model of ligand-receptor binding with false signal
 
 % Can be used after runing R_codes/capacity_validation.R as it is based on
 % probability matrices generated there

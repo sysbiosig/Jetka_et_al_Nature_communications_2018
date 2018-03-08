@@ -1,4 +1,4 @@
-function  [F Mean_term Var_term FN Mean_termN Var_termN Mean Variance VarianceInfo] = Fisher_Jf(name,N,freq,init_T,y0,obs,merr,AlgType,LOG, par,stim_ind,t_discont)
+function  [F Mean_term Var_term FN Mean_termN Var_termN Mean Variance VarianceInfo conc_traj_deriv dSigma] = Fisher_Jf(name,N,freq,init_T,y0,obs,merr,AlgType,LOG, par,stim_ind,t_discont)
 
     switch AlgType
         
@@ -7,13 +7,13 @@ function  [F Mean_term Var_term FN Mean_termN Var_termN Mean Variance VarianceIn
                 if(LOG=='T')
                 [F Mean_term Var_term Mean Variance] = FisherFunctionLogTP_Jf(name,N,freq,init_T,y0,obs,merr, par, stim_ind);
                 else    
-                [F Mean_term Var_term FN Mean_termN Var_termN Mean Variance] = FisherFunctionTP_Jf(name,N,freq, init_T,y0,obs,merr, par,stim_ind);
+                [F Mean_term Var_term FN Mean_termN Var_termN Mean Variance conc_traj_deriv dSigma] = FisherFunctionTP_Jf(name,N,freq, init_T,y0,obs,merr, par,stim_ind);
                 end
             else
                 if(LOG=='T')
                 [F Mean_term Var_term Mean Variance] = FisherFunctionLogTP_Jf(name,N,freq,init_T,y0,obs,merr, par, stim_ind);
                 else    
-                [F Mean_term Var_term FN Mean_termN Var_termN Mean Variance] = FisherFunctionTP_JfDisCont(name,N,freq, init_T,y0,obs,merr, par,stim_ind, t_discont);
+                [F Mean_term Var_term FN Mean_termN Var_termN Mean Variance conc_traj_deriv dSigma] = FisherFunctionTP_JfDisCont(name,N,freq, init_T,y0,obs,merr, par,stim_ind, t_discont);
                 end
             end
             
@@ -22,13 +22,13 @@ function  [F Mean_term Var_term FN Mean_termN Var_termN Mean Variance VarianceIn
                if(LOG=='T')
                 [F Mean_term Var_term Mean Variance] = FisherFunctionLogTS_Jf(name,N,freq,init_T,y0,obs,merr, par, stim_ind);
                 else    
-                [F Mean_term Var_term FN Mean_termN Var_termN Mean Variance] = FisherFunctionTS_Jf(name,N,freq, init_T,y0,obs,merr, par, stim_ind);
+                [F Mean_term Var_term FN Mean_termN Var_termN Mean Variance conc_traj_deriv dSigma] = FisherFunctionTS_Jf(name,N,freq, init_T,y0,obs,merr, par, stim_ind);
                end
             else
                if(LOG=='T')
                 [F Mean_term Var_term Mean Variance] = FisherFunctionLogTS_Jf(name,N,freq,init_T,y0,obs,merr, par, stim_ind);
                 else    
-                [F Mean_term Var_term FN Mean_termN Var_termN Mean Variance] = FisherFunctionTS_JfDisCont(name,N,freq, init_T,y0,obs,merr, par, stim_ind, t_discont);
+                [F Mean_term Var_term FN Mean_termN Var_termN Mean Variance conc_traj_deriv dSigma] = FisherFunctionTS_JfDisCont(name,N,freq, init_T,y0,obs,merr, par, stim_ind, t_discont);
                end
             end
 
