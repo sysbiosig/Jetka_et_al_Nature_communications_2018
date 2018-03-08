@@ -25,16 +25,16 @@ Specific requirements are listed below
 3. Matlab_codes_StochSensCapacity - Matlab > 2012b with Parallel Computing Toolbox (for faster calculations) and Symbolic Math Toolbox
 
 ### Testing
-Simulations were tested using both Windows 10 and Mac OS OX 10.11 El Capitan. We used Matlab 2016b and R 3.3.0 and machine with at least 4 cores.
+Simulations were tested using both Windows 10 and Mac OS OX 10.11 El Capitan. We used Matlab 2016b, R 3.3.0 and machine with at least 4 cores.
 
 ### Hardware
-In several places, a default number of processor's cores is assumed to be present. This feature could be however changed without the qualitative change to software's behaviour. User is asked to adjust it to his computers capabilities. 
+In several places, a default number of processor's cores is assumed to be present. User should adjust it to computer's capabilities. 
 No additional hardware is needed.
 
 
 ## Installation guide
 
-No specific installation is needed. For the instruction on installing R, Matlab and required packages please see:
+No specific installation is required. For the instruction on installing R, Matlab and required packages please see:
 
 1. https://www.r-project.org
 2. http://www.mathworks.com
@@ -42,7 +42,7 @@ No specific installation is needed. For the instruction on installing R, Matlab 
 
 ## Demo
 
-All provided codes can be run without further assistance. However, please remember to check your working directory and/or path if it includes all needed scripts.
+All provided codes can be run without further assistance. However, please remember to check your working directory and/or path whether it includes all needed scripts.
 
 ### Instruction to run on data
 
@@ -59,7 +59,7 @@ There are three examples of models defined:
 
 * Binomial - run with `capacity_binomial_script.m`, 
 * Gene expression - run with `capacity_gene_expression_script.m`
-* STAT_IFN signaling - run with `capacity_STAT_IFN_script.m` and summarise results with `capacity_STAT_IFN_summary.m`
+* STAT_IFN signaling - run with `capacity_STAT_IFN_script.m`
 
 Respective models' files are in `models/` and `models_parameters/` directories.
 
@@ -99,11 +99,11 @@ See instruction in specific scripts for more assistance
 
 ### How to run the software on your data
 
-1. R_codes - to simulate a model of receptor-ligand binding model with false signal and estimate its capacity for different false signal distribution, you need only to change initial paramteres given at the beginning of the script.
+1. R_codes - to simulate a model of receptor-ligand binding model with false signal and estimate its capacity for different false signal distribution, you need to change initial paramteres given at the beginning of the script.
 
-2. Matlab_codes_BA - to estimate channel capacity of an arbitray discrete channel you need only to specify the path to its probability matrix saved as a txt file.
+2. Matlab_codes_BA - to estimate channel capacity of an arbitray discrete channel, one must specify a path to channel's probability matrix saved as a txt file.
 
 3. Matlab_codes_StocSensCapacity
 You can either:
-* add new parameters' sets in `models_parameters/` directory for existing models and specify to use it in main script
-* add new model in `models/` and its parameters in `models_parameters/` directory 
+* add new parameters' sets in `models_parameters/` directory for existing models and specify to use it in main scripts
+* add new model in `models/` and its parameters in `models_parameters/` directory and use one of existing running scripts as the template
