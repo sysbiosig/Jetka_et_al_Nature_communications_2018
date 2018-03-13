@@ -30,24 +30,25 @@ addpath(genpath('models'))
 parset_num=1;
 M=importdata(['models_parameters/',name,'/',name,'_par.csv'],'\t',1);
 [par_nrow par_ncol]=size(M.data);
+k=1;
 
+% number of observations
+parM=M.data(k,:);  
 %% Input space
+N=parM(47);
 par=zeros(16,1);
 CapacityApp=zeros(par_nrow,1);
 JPmatrix=cell(par_nrow,1);
-init_T=0.5; % initial time
 obsv=[21,22]; % indices of observed variables
 t_discont=5;
-freq=5/3; % time distance between observations    
+freq=(5/3); % time distance between observations    
 startTime=datestr(now,'yymmdd_HHMMSS');
-path_output=['output/',name,'/final_Parset',num2str(parset_num),'_iniT',num2str(init_T),'_freq',num2str(freq),'_',startTime];
+path_output=['output/',name,'/final_Parset',num2str(parset_num),'_N',num2str(N),'_freq',num2str(freq),'_',startTime];
 path_output_parallel=[path_output,'/parallel/'];
 mkdir(path_output)
 mkdir(path_output_parallel)
 
-k=1;
-% number of observations
-parM=M.data(k,:);    
+  
 par(3:16)=parM(7:20);
 
     
@@ -80,7 +81,7 @@ y0(23)   = parM(43);
 y0(24)   = parM(44);
 y0(25)   = parM(45);
 y0(26)   = parM(46);
-N=parM(47);
+
 
 
 % Allowing model to equilibrate
@@ -89,7 +90,7 @@ par(2)=stim2_min;
 timeWait=5;
      
 for (iii=1:100)
-    [mean_sol variance_sol]= LNA_solution(name,[timeWait],y0,par,0,0);
+    [mean_sol variance_sol]= LNA_solution(name,[timeWait],y0,par,1,0);
     y0 = zeros(1,nvar_ext);
     y0(1:nvar)=mean_sol;
     y0((nvar+1):(2*nvar))=diag(variance_sol);
@@ -111,7 +112,7 @@ pctRunOnAll addpath(genpath('lib'));
 pctRunOnAll addpath(genpath('models'));
 tic;
 parfor i_parallel=1:KMesh
-    capacity_STAT_IFN_parallelfun(i_parallel,stim_spanMesh,par,name,N,freq,init_T,y0,obsv,1,'TS',stim_ind,t_discont,output_folder_p);
+    capacity_STAT_IFN_parallelfun(i_parallel,stim_spanMesh,par,name,N,freq,0.5,y0,obsv,1,'TS',stim_ind,t_discont,output_folder_p);
 end
 toc;
 delete(gcp)

@@ -86,3 +86,10 @@ theme_publ<-function (base_size = 12, base_family = "sans",version=1) {
   }
   ret
 }
+
+
+dename<-function(x){
+  x<-c(unlist(x))
+  names(x)<-NULL
+  x
+}

@@ -10,7 +10,7 @@
 # "../Matlab_codes_BA/falsesignal/"
 
 ## Set your workings directory ####
-setwd("~/Documents/Science/Paper_codes/R_codes/")
+#setwd("~/Documents/Science/Paper_codes/R_codes/")
 setwd("F:\\TJ\\Simulations\\Paper_codes\\R_codes")
 
 ## Libraries needed for calculations ####
@@ -23,11 +23,21 @@ library(gridExtra)
 source("aux_functions_figures.R")
 
 
+## Setting up variables and costants ####
+nys=c(10,50,100,500) # Setting up number of molecules
+isds=c(0.01,0.1,0.5,1,5,10,25,50) # Setting up standard variations
+ilambdas=c(1,0.5,0.1) # Setting up lambdas
+driv_step=0.0001 # shift parameter for derivative calculation
+is=200  # Setting up density of signal
+xTs=10^seq(-8,8,length.out = is)  # Setting up range of signal
+Nseq=2000 # Setting up number sample size used to approximate single marginal distribution
 
+dir.create("output")
+dir.create("paper_output")
 
 ## Generating exploratory plots ####
-outputList=readRDS(file="output_list_ver7.rds")
-outputListOpt=readRDS(file="outputPopt_list_ver7.rds")
+outputList=readRDS(file="output/output_list_ver7.rds")
+outputListOpt=readRDS(file="output/outputPopt_list_ver7.rds")
 
 
 outputDF=melt(outputList,id.vars=c("jpexact",
@@ -49,20 +59,20 @@ outputDF2$distlambda=paste(outputDF2$dist,outputDF2$lambda,sep="_")
 plot=ggplot(data=outputDF2[!outputDF2$dist=="nonoise",],aes(x=sd,y=capacityBit,colour=method))+geom_line(size=2)+
   facet_grid(distlambda~N,scales="free_y")+theme_publ(version=2)
 
-ggsave(plot,file="outputplot_withoutBA_ver7.pdf",width=10,height=20)
+ggsave(plot,file="output/plot_withoutBA_ver7.pdf",width=10,height=20)
 
 
 outputDF2$distlambda=paste(outputDF2$dist,outputDF2$lambda,sep="_")
 plot=ggplot(data=outputDF2[outputDF2$dist=="lognormal2",],aes(x=sd,y=capacityBit,colour=method))+geom_line(size=2)+
   facet_grid(distlambda~N,scales="free_y")+theme_publ(version=2)
 
-ggsave(plot,file="outputplot_withoutBA_ver7_lognormal2.pdf",width=10,height=20)
+ggsave(plot,file="output/plot_withoutBA_ver7_lognormal2.pdf",width=10,height=20)
 
 dists=c("exp","lnorm2","gamma")
 outputDF3=outputDF2
 outputDF4=list()
 for (idist in dists){
-  tempdf=read.table(file=paste("../Matlab_codes_BA/falsesignal/",idist,"_capacity.csv",sep=""),
+  tempdf=read.table(file=paste("../Matlab_codes_BA/output/falsesignal/",idist,"_capacity.csv",sep=""),
                     header=FALSE,sep=",")
   colnames(tempdf)<-c("sd","N","lambda","capacityBit")
   if (idist=="lnorm"){
@@ -86,13 +96,13 @@ outputDF4$error=abs(outputDF4$capacityBit.y-outputDF4$capacityBit.x)/outputDF4$c
 plot=ggplot(data=outputDF3[!outputDF3$dist=="nonoise",],aes(x=sd,y=capacityBit,colour=method))+geom_line(size=2)+
   facet_grid(distlambda~N,scales="free_y")+theme_publ(version=2)
 
-ggsave(plot,file="outputplot_withBA_ver7.pdf",width=10,height=30)
+ggsave(plot,file="output/plot_withBA_ver7.pdf",width=10,height=30)
 
 
 plot=ggplot(data=outputDF4[!outputDF4$dist=="nonoise",],aes(x=sd,y=error,colour=method.y))+geom_line(size=2)+
   facet_grid(distlambda~N,scales="free_y")+theme_publ(version=2)+scale_y_log10()+scale_x_log10()
 
-ggsave(plot,file="outputplot_Errors_ver7.pdf",width=10,height=30)
+ggsave(plot,file="output/plot_Errors_ver7.pdf",width=10,height=30)
 
 
 dataToPlot=aggregate(data=outputDF4[outputDF4$dist%in%c("exp","gamma"),],error~method.y+sd,mean)
@@ -100,14 +110,14 @@ plot=ggplot(data=dataToPlot,aes(x=sd,y=error,colour=method.y))+geom_line(size=2)
   theme_publ(version=2)
 plot
 
-ggsave(plot,file="outputplot_MeanErrors_ver7.pdf",width=10,height=30)
+ggsave(plot,file="output/plot_MeanErrors_ver7.pdf",width=10,height=30)
 
 dataToPlot=aggregate(data=outputDF4[outputDF4$dist%in%c("exp","gamma","lognormal2"),],error~method.y+sd,mean)
 plot=ggplot(data=dataToPlot,aes(x=sd,y=error,colour=method.y))+geom_line(size=2)+
   theme_publ(version=2)
 plot
 
-ggsave(plot,file="outputplot_MeanErrors_ver7_withLN2.pdf",width=10,height=30)
+ggsave(plot,file="output/plot_MeanErrors_ver7_withLN2.pdf",width=10,height=30)
 
 dists=c("exp","lnorm2","gamma")
 for (idist in dists){
@@ -126,7 +136,7 @@ for (idist in dists){
     for (isd in isds){
       for (ilambda in ilambdas){
         
-        temppath=paste('../Matlab_codes_BA/falsesignal/ver7_',idist,'_sd_',isd,'inputnum_',is,'_n',ny,'_lambda',ilambda,'/',sep="")
+        temppath=paste('../Matlab_codes_BA/output/falsesignal/ver7_',idist,'_sd_',isd,'inputnum_',is,'_n',ny,'_lambda',ilambda,'/',sep="")
         
         tempdf=dename(read.table(file=paste(temppath,"Q.csv",sep=""),
                                  header=FALSE,sep=","))
@@ -146,12 +156,12 @@ for (idist in dists){
 
 
 # Saving obejct after renaming
-saveRDS(outputListOpt,file="outputPopt_listFull_ver7.rds")
+saveRDS(outputListOpt,file="output/outputPopt_listFull_ver7.rds")
 
 
-outputListOpt=readRDS(file="outputPopt_listFull_ver7.rds")
+outputListOpt=readRDS(file="output/outputPopt_listFull_ver7.rds")
 
-temp_outputpath="ver7_optPlots/"
+temp_outputpath="output/ver7_optPlots/"
 dir.create(temp_outputpath)
 
 dists=c("exp","lognormal2","gamma")
@@ -189,8 +199,8 @@ for (idist in dists){
 
 
 ## Generating figures for paper####
-outputList=readRDS(file="output_list_ver7.rds")
-outputListOpt=readRDS(file="outputPopt_list_ver7.rds")
+outputList=readRDS(file="output/output_list_ver7.rds")
+outputListOpt=readRDS(file="output/outputPopt_list_ver7.rds")
 
 outputDF=melt(outputList,id.vars=c("jpexact",
                                    "jpapp",
@@ -211,7 +221,7 @@ outputDF3=outputDF2
 outputDF4=list()
 #Loading Blahut Arimoto
 for (idist in dists){
-  tempdf=read.table(file=paste("../Matlab_codes_BA/falsesignal/",idist,"_capacity.csv",sep=""),
+  tempdf=read.table(file=paste("../Matlab_codes_BA/output/falsesignal/",idist,"_capacity.csv",sep=""),
                     header=FALSE,sep=",")
   colnames(tempdf)<-c("sd","N","lambda","capacityBit")
   if (idist=="lnorm"){
@@ -233,7 +243,7 @@ outputDF4=merge(outputDF4,outputDF2,by=c( "sd", "N","lambda","dist","distlambda"
 outputDF4$error=abs(outputDF4$capacityBit.y-outputDF4$capacityBit.x)/outputDF4$capacityBit.x
 
 
-outputListOpt=readRDS(file="outputPopt_listFull_ver7.rds")
+outputListOpt=readRDS(file="output/outputPopt_listFull_ver7.rds")
 
 
 
@@ -244,7 +254,7 @@ plot=ggplot(data=outputDF3[(outputDF3$dist%in%c("exp","gamma")&
             aes(x=sd,y=capacityBit,colour=method))+geom_line(size=2)+
   facet_grid(distlambda~N,scales="free_y")+theme_publ(version=2)#+scale_y_continuous(limits=c(0,NA))
 
-ggsave(plot,file="paper_outputplot_withBA_ver7.pdf",width=8,height=6)
+ggsave(plot,file="paper_output/plot_withBA_ver7.pdf",width=8,height=6)
 
 
 plot=ggplot(data=outputDF3[(outputDF3$dist%in%c("gamma","lognormal2")&
@@ -254,7 +264,7 @@ plot=ggplot(data=outputDF3[(outputDF3$dist%in%c("gamma","lognormal2")&
             aes(x=sd,y=capacityBit,colour=method))+geom_line(size=2)+
   facet_grid(distlambda~N,scales="free_y")+theme_publ(version=2)+scale_y_continuous(limits=c(0,NA))
 
-ggsave(plot,file="paper_outputplot_withBAwithLN_ver7.pdf",width=8,height=6)
+ggsave(plot,file="paper_output/plot_withBAwithLN_ver7.pdf",width=8,height=6)
 
 outputDF4$capacityBit.y0=outputDF4$capacityBit.y
 outputDF4$capacityBit.y0[outputDF4$capacityBit.y0<0]=0
@@ -263,19 +273,19 @@ outputDF4$error0=abs(outputDF4$capacityBit.y0-outputDF4$capacityBit.x)/outputDF4
 plot=ggplot(data=outputDF4[!outputDF4$dist=="nonoise",],aes(x=sd,y=error0,colour=method.y))+geom_line(size=2)+
   facet_grid(distlambda~N,scales="free_y")+theme_publ(version=2)+scale_y_log10()+scale_x_log10()
 
-ggsave(plot,file="paper_outputplot_Errors1_ver7.pdf",width=10,height=20)
+ggsave(plot,file="paper_output/plot_Errors1_ver7.pdf",width=10,height=20)
 
 
 plot=ggplot(data=outputDF4[!outputDF4$dist=="nonoise",],aes(x=sd,y=error0,colour=method.y))+geom_line(size=2)+
   facet_grid(distlambda~N,scales="free_y")+theme_publ(version=2)#+scale_y_log10()+scale_x_log10()
 
-ggsave(plot,file="paper_outputplot_Errors2_ver7.pdf",width=10,height=20)
+ggsave(plot,file="paper_output/plot_Errors2_ver7.pdf",width=10,height=20)
 
 
 plot=ggplot(data=outputDF3[!outputDF3$dist=="nonoise",],aes(x=sd,y=capacityBit,colour=method))+geom_line(size=2)+
   facet_grid(distlambda~N,scales="free_y")+theme_publ(version=2)
 
-ggsave(plot,file="paper_outputplot_withBAAll_ver7.pdf",width=10,height=20)
+ggsave(plot,file="paper_output/plot_withBAAll_ver7.pdf",width=10,height=20)
 
 
 tempcond=(outputDF4$dist%in%c("exp","gamma","lognormal2"))&(outputDF4$lambda%in%c(0.1,0.5))&(outputDF4$N%in%c(50,500))
@@ -284,7 +294,7 @@ plot=ggplot(data=dataToPlot,aes(x=sd,y=error0,colour=method.y))+geom_line(size=2
   theme_publ(version=2)
 plot
 
-ggsave(plot,file="paper_outputplot_MeanErrors1_ver7.pdf",width=8,height=6)
+ggsave(plot,file="paper_output/plot_MeanErrors1_ver7.pdf",width=8,height=6)
 
 tempcond=(outputDF4$dist%in%c("exp","gamma","lognormal2"))
 dataToPlot=aggregate(data=outputDF4[tempcond,],error0~method.y+sd,mean)
@@ -292,7 +302,7 @@ plot=ggplot(data=dataToPlot,aes(x=sd,y=error0,colour=method.y))+geom_line(size=2
   theme_publ(version=2)
 plot
 
-ggsave(plot,file="paper_outputplot_MeanErrors2_ver7.pdf",width=8,height=6)
+ggsave(plot,file="paper_output/plot_MeanErrors2_ver7.pdf",width=8,height=6)
 
 
 tempcond=(outputDF4$dist%in%c("exp","gamma","lognormal2"))&(outputDF4$lambda%in%c(0.1,0.5,1))&(outputDF4$N%in%c(50,100,500))
@@ -301,7 +311,7 @@ plot=ggplot(data=dataToPlot,aes(x=sd,y=error0,colour=method.y))+geom_line(size=2
   theme_publ(version=2)
 plot
 
-ggsave(plot,file="paper_outputplot_MeanErrors3_ver7.pdf",width=8,height=8)
+ggsave(plot,file="paper_output/plot_MeanErrors3_ver7.pdf",width=8,height=8)
 
 
 
@@ -311,7 +321,7 @@ plot=ggplot(data=dataToPlot,aes(x=sd,y=error0,colour=method.y))+geom_line(size=2
   theme_publ(version=2)
 plot
 
-ggsave(plot,file="paper_outputplot_MeanErrors_exp_ver7.pdf",width=8,height=6)
+ggsave(plot,file="paper_output/plot_MeanErrors_exp_ver7.pdf",width=8,height=6)
 
 tempcond=(outputDF4$dist%in%c("gamma"))
 dataToPlot=aggregate(data=outputDF4[tempcond,],error0~method.y+sd,mean)
@@ -319,7 +329,7 @@ plot=ggplot(data=dataToPlot,aes(x=sd,y=error0,colour=method.y))+geom_line(size=2
   theme_publ(version=2)
 plot
 
-ggsave(plot,file="paper_outputplot_MeanErrors_gamma_ver7.pdf",width=8,height=6)
+ggsave(plot,file="paper_output/plot_MeanErrors_gamma_ver7.pdf",width=8,height=6)
 
 tempcond=(outputDF4$dist%in%c("lognormal2"))
 dataToPlot=aggregate(data=outputDF4[tempcond,],error0~method.y+sd,mean)
@@ -327,7 +337,7 @@ plot=ggplot(data=dataToPlot,aes(x=sd,y=error0,colour=method.y))+geom_line(size=2
   theme_publ(version=2)
 plot
 
-ggsave(plot,file="paper_outputplot_MeanErrors_lognormal_ver7.pdf",width=8,height=6)
+ggsave(plot,file="paper_output/plot_MeanErrors_lognormal_ver7.pdf",width=8,height=6)
 
 
 tempcond=(outputDF4$dist%in%c("exp"))&(outputDF4$lambda%in%c(0.1,0.5))&(outputDF4$N%in%c(50,100,500))
@@ -336,7 +346,7 @@ plot=ggplot(data=dataToPlot,aes(x=sd,y=error0,colour=method.y))+geom_line(size=2
   theme_publ(version=2)
 plot
 
-ggsave(plot,file="paper_outputplot_MeanErrors_exp_chosen_ver7.pdf",width=8,height=6)
+ggsave(plot,file="paper_output/plot_MeanErrors_exp_chosen_ver7.pdf",width=8,height=6)
 
 tempcond=(outputDF4$dist%in%c("gamma"))&(outputDF4$lambda%in%c(0.1,0.5))&(outputDF4$N%in%c(50,100,500))
 dataToPlot=aggregate(data=outputDF4[tempcond,],error0~method.y+sd,mean)
@@ -344,7 +354,7 @@ plot=ggplot(data=dataToPlot,aes(x=sd,y=error0,colour=method.y))+geom_line(size=2
   theme_publ(version=2)
 plot
 
-ggsave(plot,file="paper_outputplot_MeanErrors_gamma_chosen_ver7.pdf",width=8,height=6)
+ggsave(plot,file="paper_output/plot_MeanErrors_gamma_chosen_ver7.pdf",width=8,height=6)
 
 tempcond=(outputDF4$dist%in%c("lognormal2"))&(outputDF4$lambda%in%c(0.1,0.5))&(outputDF4$N%in%c(50,100,500))
 dataToPlot=aggregate(data=outputDF4[tempcond,],error0~method.y+sd,mean)
@@ -352,5 +362,5 @@ plot=ggplot(data=dataToPlot,aes(x=sd,y=error0,colour=method.y))+geom_line(size=2
   theme_publ(version=2)
 plot
 
-ggsave(plot,file="paper_outputplot_MeanErrors_lognormal_chosen_ver7.pdf",width=8,height=6)
+ggsave(plot,file="paper_output/plot_MeanErrors_lognormal_chosen_ver7.pdf",width=8,height=6)
 
