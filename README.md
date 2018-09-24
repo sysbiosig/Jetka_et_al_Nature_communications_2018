@@ -1,7 +1,8 @@
 #Guide for editors and reviewers
 
-Custom code accompanying manuscript NCOMMS-18-04749:
-"An information-theoretic framework for deciphering pleiotropic and noisy biochemical signaling"
+Custom code accompanying manuscript
+> Tomasz Jetka, Karol Nienałtowski, Sarah Filippi, Michael P.H. Stumpf and Michał
+Komorowski, "An information-theoretic framework for deciphering pleiotropic and noisy biochemical signaling", Nature Communications, 2018.
 
 
 ## Introduction
