@@ -1,6 +1,4 @@
-#Guide for editors and reviewers
-
-Custom code accompanying manuscript
+Code accompanying manuscript
 > Tomasz Jetka, Karol Nienałtowski, Sarah Filippi, Michael P.H. Stumpf and Michał
 Komorowski, "An information-theoretic framework for deciphering pleiotropic and noisy biochemical signaling", Nature Communications, 2018.
 
